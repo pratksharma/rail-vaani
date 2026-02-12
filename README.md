@@ -66,7 +66,6 @@ components/
 	modal.js            # Audio player modal
 public/
 	banner.jpg          # Header image
-	avatar.jpg          # Audio card avatar
 ```
 
 ## Scripts
