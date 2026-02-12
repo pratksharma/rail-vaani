@@ -70,7 +70,7 @@ export default function Home() {
         backgroundSize: '20px 20px'
       }}
     >
-      <div className="max-w-md w-full">
+      <div className="max-w-md w-full bg-white">
         {/* Card with Gradient Background */}
         <div className="rounded-2xl shadow-xl overflow-hidden">
           {/* Header Section with Gradient Background */}
@@ -88,8 +88,8 @@ export default function Home() {
             </h1>
           </div>
 
-          {/* White Form Section */}
-          <div className="bg-white px-6 sm:px-8 py-6">
+          {/* Form Section */}
+          <div className="px-6 sm:px-8 py-6">
             <h2 className="text-lg font-semibold text-gray-900 text-center mb-5">
               {activeTab === "train" ? "Generate Train Announcement" : "Generate Metro Announcement"}
             </h2>

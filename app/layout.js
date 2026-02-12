@@ -14,8 +14,12 @@ const dmSans = DM_Sans({
 });
 
 export const metadata = {
-  title: "RailVaani - Train & Metro Information",
-  description: "Get comprehensive information about Indian trains and metro stations",
+  title: "RailVaani - Hindi Train & Metro Announcements",
+  description:
+    "Generate Hindi train and metro station announcements with live train info and downloadable audio.",
+  icons: {
+    icon: "favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

@@ -157,7 +157,7 @@ export default function Modal({ isOpen, onClose, audioUrl, isLoading, info, anno
                                             style={{ backgroundImage: "url(/banner.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
                                             aria-label={isPlaying ? "Pause" : "Play"}
                                         >
-                                            <span className="absolute inset-0 bg-black/35" />
+                                            <span className="absolute inset-0" />
                                             {isPlaying ? (
                                                 <Pause className="relative w-7 h-7 text-white" />
                                             ) : (

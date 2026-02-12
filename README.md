@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# RailVaani
 
-## Getting Started
+RailVaani is a Next.js app that generates Hindi train and metro station announcements using live train metadata and text-to-speech. Enter a 5-digit Indian train number or a metro station name to produce a downloadable audio announcement.
 
-First, run the development server:
+## Features
+
+- Train announcements powered by IRCTC metadata
+- Metro station announcements with configurable station names
+- Hindi text-to-speech via SarvamAI
+- In-app audio player with progress, seek, and download
+- Clean, mobile-friendly UI
+
+## Tech Stack
+
+- Next.js App Router
+- React 19
+- Tailwind CSS v4
+- SarvamAI SDK
+- irctc-connect
+
+## Prerequisites
+
+- Node.js 18+ (recommended)
+- A SarvamAI API subscription key
+
+## Setup
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Create an environment file
+
+Create a `.env.local` file in the project root:
+
+```bash
+NEXT_PUBLIC_SARVAM_API_TOKEN=your_sarvamai_api_key
+```
+
+3. Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Choose Train or Metro.
+2. Enter a 5-digit train number or a station name.
+3. Click Generate to create the announcement.
+4. Play or download the audio from the modal.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+	layout.js           # App shell, fonts, metadata
+	page.js             # Main UI and form logic
+	utils/
+		get-audio.js      # TTS + data fetching logic
+components/
+	modal.js            # Audio player modal
+public/
+	banner.jpg          # Header image
+	avatar.jpg          # Audio card avatar
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` - start the development server
+- `npm run build` - build for production
+- `npm run start` - run the production build
+- `npm run lint` - run ESLint
 
-## Deploy on Vercel
+## Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `NEXT_PUBLIC_SARVAM_API_TOKEN` - SarvamAI API key used for text-to-speech
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Train announcements use `irctc-connect` to fetch live train details.
+- Audio is created in the browser using the SarvamAI client SDK.
+
+## License
+
+MIT
