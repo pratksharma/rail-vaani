@@ -1,65 +1,197 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { Github } from "lucide-react";
+import { getTrainAudio, getMetroAudio } from "./utils/get-audio";
+import Modal from "../components/modal";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("train");
+  const [trainNumber, setTrainNumber] = useState("");
+  const [metroStation, setMetroStation] = useState("");
+  const [audioData, setAudioData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [info, setInfo] = useState(null);
+  const [announcementType, setAnnouncementType] = useState(null);
+
+  const handleTrainGenerate = async (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+    setIsLoading(true);
+    setAudioData(null);
+    setAnnouncementType('train');
+
+    try {
+      const result = await getTrainAudio(trainNumber);
+      if (result && result.success) {
+        setAudioData(result.audioUrl);
+        setInfo(result.trainInfo);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleMetroGenerate = async (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+    setIsLoading(true);
+    setAudioData(null);
+    setAnnouncementType('metro');
+
+    try {
+      const result = await getMetroAudio(metroStation);
+      if (result && result.success) {
+        setAudioData(result.audioUrl);
+        setInfo(result.stationInfo);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setAudioData(null);
+    setInfo(null);
+    setAnnouncementType(null);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div
+      className="h-screen max-h-svh flex items-center justify-center px-4 py-8"
+      style={{
+        backgroundColor: '#ffffff',
+        backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
+        backgroundSize: '20px 20px'
+      }}
+    >
+      <div className="max-w-md w-full">
+        {/* Card with Gradient Background */}
+        <div className="rounded-2xl shadow-xl overflow-hidden">
+          {/* Header Section with Gradient Background */}
+          <div className="p-6 sm:p-8 text-center overflow-hidden"
+
+            style={{
+              backgroundImage: 'url(/banner.jpg)',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <h1 className="font-serif text-3xl md:text-4xl text-white">
+              RailVaani
+            </h1>
+          </div>
+
+          {/* White Form Section */}
+          <div className="bg-white px-6 sm:px-8 py-6">
+            <h2 className="text-lg font-semibold text-gray-900 text-center mb-5">
+              {activeTab === "train" ? "Generate Train Announcement" : "Generate Metro Announcement"}
+            </h2>
+
+            {/* Tab Selector */}
+            <div className="flex gap-2 mb-5 bg-gray-100 p-1 rounded-lg">
+              <button
+                onClick={() => setActiveTab("train")}
+                className={`cursor-pointer flex-1 py-2 px-3 rounded-md text-xs font-semibold transition-all duration-200 ${activeTab === "train"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+                  }`}
+              >
+                🚂 Train
+              </button>
+              <button
+                onClick={() => setActiveTab("metro")}
+                className={`cursor-pointer flex-1 py-2 px-3 rounded-md text-xs font-semibold transition-all duration-200 ${activeTab === "metro"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+                  }`}
+              >
+                🚇 Metro
+              </button>
+            </div>
+
+            {/* Forms */}
+            {activeTab === "train" ? (
+              <form onSubmit={handleTrainGenerate} className="space-y-4">
+                <div>
+                  <label htmlFor="trainNumber" className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Train Number
+                  </label>
+                  <input
+                    type="text"
+                    id="trainNumber"
+                    value={trainNumber}
+                    onChange={(e) => setTrainNumber(e.target.value)}
+                    placeholder="Enter 5-digit train number"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/5 transition-all"
+                    pattern="[0-9]{5}"
+                    title="Please enter a valid 5-digit train number"
+                    required
+                  />
+                  <p className="mt-1 text-[10px] text-gray-500">
+                    Enter a valid 5-digit Indian train number
+                  </p>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-gray-900 text-white py-2.5 px-4 text-sm rounded-lg font-semibold hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
+                >
+                  Generate
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleMetroGenerate} className="space-y-4">
+                <div>
+                  <label htmlFor="metroStation" className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Metro Station
+                  </label>
+                  <input
+                    type="text"
+                    id="metroStation"
+                    value={metroStation}
+                    onChange={(e) => setMetroStation(e.target.value)}
+                    placeholder="Enter metro station name"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/5 transition-all"
+                    required
+                  />
+                  <p className="mt-1 text-[10px] text-gray-500">
+                    Enter the name of any Indian metro station
+                  </p>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-gray-900 text-white py-2.5 px-4 text-sm rounded-lg font-semibold hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
+                >
+                  Generate
+                </button>
+              </form>
+            )}
+          </div>
         </div>
-      </main>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        audioUrl={audioData}
+        isLoading={isLoading}
+        info={info}
+        announcementType={announcementType}
+      />
+      <a
+        href="https://github.com/pratksharma/rail-vaani"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-gray-600 hover:text-gray-900 transition inline-flex items-center gap-2"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Github className="w-4 h-4" />
+        GitHub
+      </a>
     </div>
   );
 }
