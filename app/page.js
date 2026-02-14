@@ -13,6 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [info, setInfo] = useState(null);
   const [announcementType, setAnnouncementType] = useState(null);
+  const [speakerGender, setSpeakerGender] = useState("female");
 
   const handleTrainGenerate = async (e) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ export default function Home() {
     setAnnouncementType('train');
 
     try {
-      const result = await getTrainAudio(trainNumber);
+      const result = await getTrainAudio(trainNumber, speakerGender);
       if (result && result.success) {
         setAudioData(result.audioUrl);
         setInfo(result.trainInfo);
@@ -42,7 +43,7 @@ export default function Home() {
     setAnnouncementType('metro');
 
     try {
-      const result = await getMetroAudio(metroStation);
+      const result = await getMetroAudio(metroStation, speakerGender);
       if (result && result.success) {
         setAudioData(result.audioUrl);
         setInfo(result.stationInfo);
@@ -138,9 +139,38 @@ export default function Home() {
                     Enter a valid 5-digit Indian train number
                   </p>
                 </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
+                    Speaker Voice
+                  </label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="speaker"
+                        value="female"
+                        checked={speakerGender === "female"}
+                        onChange={(e) => setSpeakerGender(e.target.value)}
+                        className="w-4 h-4 text-gray-900 cursor-pointer"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Female</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="speaker"
+                        value="male"
+                        checked={speakerGender === "male"}
+                        onChange={(e) => setSpeakerGender(e.target.value)}
+                        className="w-4 h-4 text-gray-900 cursor-pointer"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Male</span>
+                    </label>
+                  </div>
+                </div>
                 <button
                   type="submit"
-                  className="w-full bg-gray-900 text-white py-2.5 px-4 text-sm rounded-lg font-semibold hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
+                  className="w-full bg-black text-white py-2.5 px-4 text-sm rounded-lg font-semibold hover:bg-gray-900 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
                 >
                   Generate
                 </button>
@@ -164,9 +194,38 @@ export default function Home() {
                     Enter the name of any Indian metro station
                   </p>
                 </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
+                    Speaker Voice
+                  </label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="speaker"
+                        value="female"
+                        checked={speakerGender === "female"}
+                        onChange={(e) => setSpeakerGender(e.target.value)}
+                        className="w-4 h-4 text-gray-900 cursor-pointer"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Female</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="speaker"
+                        value="male"
+                        checked={speakerGender === "male"}
+                        onChange={(e) => setSpeakerGender(e.target.value)}
+                        className="w-4 h-4 text-gray-900 cursor-pointer"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Male</span>
+                    </label>
+                  </div>
+                </div>
                 <button
                   type="submit"
-                  className="w-full bg-gray-900 text-white py-2.5 px-4 text-sm rounded-lg font-semibold hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
+                  className="w-full bg-black text-white py-2.5 px-4 text-sm rounded-lg font-semibold hover:bg-gray-900 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
                 >
                   Generate
                 </button>

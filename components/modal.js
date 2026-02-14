@@ -213,7 +213,7 @@ export default function Modal({ isOpen, onClose, audioUrl, isLoading, info, anno
                                     <div className="flex justify-end">
                                         <button
                                             onClick={handleDownload}
-                                            className="cursor-pointer bg-gray-900 text-white py-2 px-4 text-xs rounded-lg font-semibold hover:bg-gray-800 transition-all duration-200 active:scale-[0.98] flex items-center gap-2"
+                                            className="cursor-pointer bg-black text-white py-2 px-4 text-xs rounded-lg font-semibold hover:bg-gray-900 transition-all duration-200 active:scale-[0.98] flex items-center gap-2"
                                         >
                                             <Download className="w-4 h-4" />
                                             Download

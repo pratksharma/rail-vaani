@@ -1,7 +1,7 @@
 import { SarvamAIClient } from "sarvamai";
 import { getTrainInfo } from "irctc-connect";
 
-export const getTrainAudio = async (trainNumber) => {
+export const getTrainAudio = async (trainNumber, speakerGender = "female") => {
     console.log("Generating info for train number:", trainNumber);
     const result = await getTrainInfo(trainNumber);
     if (result.success) {
@@ -12,10 +12,12 @@ export const getTrainAudio = async (trainNumber) => {
                 apiSubscriptionKey: process.env.NEXT_PUBLIC_SARVAM_API_TOKEN
             });
 
+            const speakerName = speakerGender === "male" ? "shubh" : "ritu";
+
             const response = await client.textToSpeech.convert({
                 text: `यात्रिगण कृपया ध्यान दें, गाड़ी संख्या ${trainInfo.train_no}, ${trainInfo.from_stn_name} से चलकर ${trainInfo.to_stn_name} की ओर जाने वाली ${trainInfo.train_name} एक्सप्रेस, अपने निर्धारित समय पर प्लेटफॉर्म क्रमांक 1 पर आने वाली है।`,
                 target_language_code: "hi-IN",
-                speaker: "ritu",
+                speaker: speakerName,
                 pace: 0.9,
                 speech_sample_rate: 22050,
                 enable_preprocessing: true,
@@ -64,7 +66,7 @@ export const getTrainAudio = async (trainNumber) => {
     }
 }
 
-export const getMetroAudio = async (stationName) => {
+export const getMetroAudio = async (stationName, speakerGender = "female") => {
     console.log("Generating metro announcement for station:", stationName);
 
     try {
@@ -72,10 +74,12 @@ export const getMetroAudio = async (stationName) => {
             apiSubscriptionKey: process.env.NEXT_PUBLIC_SARVAM_API_TOKEN
         });
 
+        const speakerName = speakerGender === "male" ? "shubh" : "ritu";
+
         const response = await client.textToSpeech.convert({
             text: `यह स्टेशन ${stationName} है। दरवाज़े दायीं ओर खुलेंगे। कृपया सावधानी से उतरें।`,
             target_language_code: "hi-IN",
-            speaker: "shubh",
+            speaker: speakerName,
             pace: 0.9,
             speech_sample_rate: 22050,
             enable_preprocessing: true,
